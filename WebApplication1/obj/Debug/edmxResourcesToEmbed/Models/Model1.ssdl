@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WardrobeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Acessories">
+    <Key>
+      <PropertyRef Name="OutfitID" />
+      <PropertyRef Name="WardrobeItemID" />
+    </Key>
+    <Property Name="OutfitID" Type="int" Nullable="false" />
+    <Property Name="WardrobeItemID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Outfits">
+    <Key>
+      <PropertyRef Name="OutfitID" />
+    </Key>
+    <Property Name="OutfitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TopID" Type="int" Nullable="false" />
+    <Property Name="BottomID" Type="int" Nullable="false" />
+    <Property Name="ShoeID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Types">
+    <Key>
+      <PropertyRef Name="TypeID" />
+    </Key>
+    <Property Name="TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WardrobeItems">
+    <Key>
+      <PropertyRef Name="WardrobeItemID" />
+    </Key>
+    <Property Name="WardrobeItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Photo" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_Acessories_Outfits">
+    <End Role="Outfits" Type="Self.Outfits" Multiplicity="1" />
+    <End Role="Acessories" Type="Self.Acessories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Outfits">
+        <PropertyRef Name="OutfitID" />
+      </Principal>
+      <Dependent Role="Acessories">
+        <PropertyRef Name="OutfitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Acessories_WardrobeItems">
+    <End Role="WardrobeItems" Type="Self.WardrobeItems" Multiplicity="1" />
+    <End Role="Acessories" Type="Self.Acessories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WardrobeItems">
+        <PropertyRef Name="WardrobeItemID" />
+      </Principal>
+      <Dependent Role="Acessories">
+        <PropertyRef Name="WardrobeItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Outfits_WardrobeItems">
+    <End Role="WardrobeItems" Type="Self.WardrobeItems" Multiplicity="1" />
+    <End Role="Outfits" Type="Self.Outfits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WardrobeItems">
+        <PropertyRef Name="WardrobeItemID" />
+      </Principal>
+      <Dependent Role="Outfits">
+        <PropertyRef Name="TopID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Outfits_WardrobeItems1">
+    <End Role="WardrobeItems" Type="Self.WardrobeItems" Multiplicity="1" />
+    <End Role="Outfits" Type="Self.Outfits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WardrobeItems">
+        <PropertyRef Name="WardrobeItemID" />
+      </Principal>
+      <Dependent Role="Outfits">
+        <PropertyRef Name="BottomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Outfits_WardrobeItems2">
+    <End Role="WardrobeItems" Type="Self.WardrobeItems" Multiplicity="1" />
+    <End Role="Outfits" Type="Self.Outfits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WardrobeItems">
+        <PropertyRef Name="WardrobeItemID" />
+      </Principal>
+      <Dependent Role="Outfits">
+        <PropertyRef Name="ShoeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WardrobeItems_Types">
+    <End Role="Types" Type="Self.Types" Multiplicity="1" />
+    <End Role="WardrobeItems" Type="Self.WardrobeItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Types">
+        <PropertyRef Name="TypeID" />
+      </Principal>
+      <Dependent Role="WardrobeItems">
+        <PropertyRef Name="TypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WardrobeModelStoreContainer">
+    <EntitySet Name="Acessories" EntityType="Self.Acessories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Outfits" EntityType="Self.Outfits" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WardrobeItems" EntityType="Self.WardrobeItems" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Acessories_Outfits" Association="Self.FK_Acessories_Outfits">
+      <End Role="Outfits" EntitySet="Outfits" />
+      <End Role="Acessories" EntitySet="Acessories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Acessories_WardrobeItems" Association="Self.FK_Acessories_WardrobeItems">
+      <End Role="WardrobeItems" EntitySet="WardrobeItems" />
+      <End Role="Acessories" EntitySet="Acessories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Outfits_WardrobeItems" Association="Self.FK_Outfits_WardrobeItems">
+      <End Role="WardrobeItems" EntitySet="WardrobeItems" />
+      <End Role="Outfits" EntitySet="Outfits" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Outfits_WardrobeItems1" Association="Self.FK_Outfits_WardrobeItems1">
+      <End Role="WardrobeItems" EntitySet="WardrobeItems" />
+      <End Role="Outfits" EntitySet="Outfits" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Outfits_WardrobeItems2" Association="Self.FK_Outfits_WardrobeItems2">
+      <End Role="WardrobeItems" EntitySet="WardrobeItems" />
+      <End Role="Outfits" EntitySet="Outfits" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WardrobeItems_Types" Association="Self.FK_WardrobeItems_Types">
+      <End Role="Types" EntitySet="Types" />
+      <End Role="WardrobeItems" EntitySet="WardrobeItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WardrobeModelStoreContainer" CdmEntityContainer="WardrobeEntities">
+    <EntitySetMapping Name="Outfits">
+      <EntityTypeMapping TypeName="WardrobeModel.Outfit">
+        <MappingFragment StoreEntitySet="Outfits">
+          <ScalarProperty Name="OutfitID" ColumnName="OutfitID" />
+          <ScalarProperty Name="TopID" ColumnName="TopID" />
+          <ScalarProperty Name="BottomID" ColumnName="BottomID" />
+          <ScalarProperty Name="ShoeID" ColumnName="ShoeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Types">
+      <EntityTypeMapping TypeName="WardrobeModel.Type">
+        <MappingFragment StoreEntitySet="Types">
+          <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+          <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WardrobeItems">
+      <EntityTypeMapping TypeName="WardrobeModel.WardrobeItem">
+        <MappingFragment StoreEntitySet="WardrobeItems">
+          <ScalarProperty Name="WardrobeItemID" ColumnName="WardrobeItemID" />
+          <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Acessories1" TypeName="WardrobeModel.Acessories" StoreEntitySet="Acessories">
+      <EndProperty Name="WardrobeItem">
+        <ScalarProperty Name="WardrobeItemID" ColumnName="WardrobeItemID" />
+      </EndProperty>
+      <EndProperty Name="Outfit">
+        <ScalarProperty Name="OutfitID" ColumnName="OutfitID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
