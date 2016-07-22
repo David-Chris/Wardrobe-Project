@@ -58,7 +58,7 @@ namespace WebApplication1.Controllers
             ViewBag.TopID = new SelectList(possibleTops, "WardrobeItemID", "Name");
             ViewBag.BottomID = new SelectList(possibleBottoms, "WardrobeItemID", "Name");
             ViewBag.ShoeID = new SelectList(possibleShoes, "WardrobeItemID", "Name");
-            ViewBag.AcessoryID = new SelectList(possibleAcessories, "WardrobeItemID", "Name");
+            ViewBag.AcessoryID = new MultiSelectList(possibleAcessories, "WardrobeItemID", "Name");
             return View();
         }
 
@@ -67,10 +67,14 @@ namespace WebApplication1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OutfitID,TopID,BottomID,ShoeID")] Outfit outfit)
+        public ActionResult Create([Bind(Include = "OutfitID,TopID,BottomID,ShoeID")] Outfit outfit, int[] AcessoryID)
         {
             if (ModelState.IsValid)
             {
+                foreach (var item in AcessoryID)
+                {
+                    outfit.Acessories.Add(db.WardrobeItems.Find(item));
+                }
                 db.Outfits.Add(outfit);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -79,6 +83,7 @@ namespace WebApplication1.Controllers
             ViewBag.TopID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.TopID);
             ViewBag.BottomID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.BottomID);
             ViewBag.ShoeID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.ShoeID);
+            ViewBag.AcessoryID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.Acessories);
             return View(outfit);
         }
 
@@ -140,6 +145,7 @@ namespace WebApplication1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Outfit outfit = db.Outfits.Find(id);
+            outfit.Acessories.Clear();
             db.Outfits.Remove(outfit);
             db.SaveChanges();
             return RedirectToAction("Index");
