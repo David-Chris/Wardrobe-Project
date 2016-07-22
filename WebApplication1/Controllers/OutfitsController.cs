@@ -90,7 +90,29 @@ namespace WebApplication1.Controllers
         // GET: Outfits/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            var possibleTops = from item in db.WardrobeItems
+                               where item.TypeID == 1
+                               select item;
+
+            var possibleBottoms = from item in db.WardrobeItems
+                                  where item.TypeID == 2
+                                  select item;
+
+            var possibleShoes = from item in db.WardrobeItems
+                                where item.TypeID == 3
+                                select item;
+
+            var possibleAcessories = from item in db.WardrobeItems
+                                     where item.TypeID == 4
+                                     select item;
+
+            ViewBag.TopID = new SelectList(possibleTops, "WardrobeItemID", "Name");
+            ViewBag.BottomID = new SelectList(possibleBottoms, "WardrobeItemID", "Name");
+            ViewBag.ShoeID = new SelectList(possibleShoes, "WardrobeItemID", "Name");
+            ViewBag.AcessoryID = new MultiSelectList(possibleAcessories, "WardrobeItemID", "Name");
+            return View();
+
+            /*if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -102,7 +124,8 @@ namespace WebApplication1.Controllers
             ViewBag.TopID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.TopID);
             ViewBag.BottomID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.BottomID);
             ViewBag.ShoeID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.ShoeID);
-            return View(outfit);
+            ViewBag.AcessoryID = new SelectList(db.WardrobeItems, "WardrobeitemID", "Name", outfit)
+            return View(outfit);*/
         }
 
         // POST: Outfits/Edit/5
@@ -110,18 +133,43 @@ namespace WebApplication1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OutfitID,TopID,BottomID,ShoeID")] Outfit outfit)
+        public ActionResult Edit([Bind(Include = "OutfitID,TopID,BottomID,ShoeID")] Outfit outfit, int[] AcessoryID)
         {
+            /* foreach (var item in AcessoryID)
+             {
+                 outfit.Acessories.Add(db.WardrobeItems.Find(item));
+             }*/
+            var possibleTops = from item in db.WardrobeItems
+                               where item.TypeID == 1
+                               select item;
+
+            var possibleBottoms = from item in db.WardrobeItems
+                                  where item.TypeID == 2
+                                  select item;
+
+            var possibleShoes = from item in db.WardrobeItems
+                                where item.TypeID == 3
+                                select item;
+
+            var possibleAcessories = from item in db.WardrobeItems
+                                     where item.TypeID == 4
+                                     select item;
             if (ModelState.IsValid)
             {
-                db.Entry(outfit).State = EntityState.Modified;
+                outfit.Acessories.Clear();
+                foreach (var item in AcessoryID)
+                {
+                    outfit.Acessories.Add(db.WardrobeItems.Find(item));
+                }
+               // db.Entry(outfit).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TopID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.TopID);
-            ViewBag.BottomID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.BottomID);
-            ViewBag.ShoeID = new SelectList(db.WardrobeItems, "WardrobeItemID", "Name", outfit.ShoeID);
-            return View(outfit);
+            ViewBag.TopID = new SelectList(possibleTops, "WardrobeItemID", "Name");
+            ViewBag.BottomID = new SelectList(possibleBottoms, "WardrobeItemID", "Name");
+            ViewBag.ShoeID = new SelectList(possibleShoes, "WardrobeItemID", "Name");
+            ViewBag.AcessoryID = new MultiSelectList(possibleAcessories, "WardrobeItemID", "Name");
+            return View();
         }
 
         // GET: Outfits/Delete/5
